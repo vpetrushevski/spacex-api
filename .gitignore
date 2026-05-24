@@ -403,3 +403,7 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+# Custom project ignores
+**/Logs/
+**/.DS_Store

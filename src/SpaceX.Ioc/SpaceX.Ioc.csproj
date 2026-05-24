@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DependencyInjection\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DependencyInjection\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpaceX.Infrastructure.Database\SpaceX.Infrastructure.Database.csproj" />
+    <ProjectReference Include="..\SpaceX.Core.Services\SpaceX.Core.Services.csproj" />
+  </ItemGroup>
+</Project>
