@@ -1,0 +1,25 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SpaceX.Infrastructure.Database.Context;
+using SpaceX.Infrastructure.Database.Repositories;
+using SpaceX.Infrastructure.Interfaces.Database.Repositories;
+
+namespace SpaceX.Infrastructure.Database.DependencyInjection;
+
+public static class DatabaseServiceCollectionExtensions
+{
+    public static IServiceCollection AddDatabaseServices(this IServiceCollection services, string connectionString)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        services.AddDbContext<ISpaceXDbContext, SpaceXDbContext>(options =>
+        {
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        });
+
+        services.AddTransient<IAccountRepository, AccountRepository>();
+
+        return services;
+    }
+}
+
