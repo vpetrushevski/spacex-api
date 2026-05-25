@@ -13,7 +13,8 @@ public static class RefreshTokenDataModelMappings
         {
             AccountId = domain.AccountId,
             Token = domain.Token,
-            ExpiresAtUtc = domain.ExpiresAtUtc
+            ExpiresAtUtc = domain.ExpiresAtUtc,
+            CreatedAtUtc = DateTimeOffset.UtcNow
         };
     }
 
@@ -26,7 +27,8 @@ public static class RefreshTokenDataModelMappings
             Id = dataModel.Id,
             AccountId = dataModel.AccountId,
             Token = dataModel.Token,
-            ExpiresAtUtc = dataModel.ExpiresAtUtc
+            ExpiresAtUtc = dataModel.ExpiresAtUtc,
+            Account = dataModel.Account.ToDomain()
         };
     }
 }

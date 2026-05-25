@@ -18,6 +18,7 @@ public static class AccountDataModelMappings
             Password = dataModel.Password,
             Status = dataModel.Status,
             IsVerified = dataModel.IsVerified,
+            VerificationToken = dataModel.VerificationToken,
             CreatedAtUtc = dataModel.CreatedAtUtc
         };
     }

@@ -13,7 +13,8 @@ public static class PasswordResetTokenDataModelMappings
         {
             AccountId = domain.AccountId,
             Token = domain.Token,
-            ExpiresAtUtc = domain.ExpiresAtUtc
+            ExpiresAtUtc = domain.ExpiresAtUtc,
+            CreatedAtUtc = DateTimeOffset.UtcNow
         };
     }
 

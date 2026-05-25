@@ -2,24 +2,28 @@ using System.ComponentModel.DataAnnotations;
 
 using SpaceX.Core.Domain.Entities;
 using SpaceX.Core.Domain.Entities.Enums;
+using SpaceX.Core.Domain.Models.Email;
 using SpaceX.Core.Domain.Models.Requests;
 using SpaceX.Core.Services.Helpers;
 using SpaceX.Core.Services.Interfaces;
 using SpaceX.Infrastructure.Interfaces.Database.Repositories;
+using SpaceX.Infrastructure.Interfaces.Email;
 
 namespace SpaceX.Core.Services.Accounts;
 
 public class AccountService : IAccountService
 {
     private readonly IAccountRepository _accountRepository;
-
+    private readonly IEmailBackgroundDispatcher _emailBackgroundDispatcher;
     private readonly EncryptionHelper _encryptionHelper;
 
     public AccountService(
         IAccountRepository accountRepository,
+        IEmailBackgroundDispatcher emailBackgroundDispatcher,
         EncryptionHelper encryptionHelper)
     {
         _accountRepository = accountRepository;
+        _emailBackgroundDispatcher = emailBackgroundDispatcher;
         _encryptionHelper = encryptionHelper;
     }
 
@@ -41,6 +45,7 @@ public class AccountService : IAccountService
 
         var account = new Account()
         {
+            Id = Guid.NewGuid(),
             FirstName = request.FirstName.Trim(),
             LastName = request.LastName.Trim(),
             Email = encryptedEmail,
@@ -53,7 +58,15 @@ public class AccountService : IAccountService
 
         await _accountRepository.CreateAccountAsync(account);
 
-        //TODO: Send verification email
+        await _emailBackgroundDispatcher.EnqueueAsync(new EmailMessage
+        {
+            Type = EmailType.Verification,
+            Email = normalizedEmail,
+            FirstName = account.FirstName,
+            LastName = account.LastName,
+            AccountId = account.Id,
+            Token = verificationToken
+        });
     }
 
     public async Task<bool> CheckIsEmailRegisteredAsync(string email)

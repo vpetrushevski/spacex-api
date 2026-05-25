@@ -6,11 +6,13 @@ public interface IAuthenticationRepository
 {
     Task<RefreshToken?> GetRefreshTokenAsync(Guid accountId, string token);
 
-    Task AddRefreshTokenAsync(RefreshToken request);
+    Task CreateRefreshTokenAsync(RefreshToken request);
 
-    Task RemoveRefreshTokenAsync(Guid accountId, string token);
+    Task DeleteRefreshTokenAsync(Guid accountId, string token);
 
-    Task RemoveExpiredRefreshTokensAsync();
+    Task DeleteRefreshTokensByAccountIdAsync(Guid accountId);
+
+    Task DeleteExpiredRefreshTokensAsync();
 
     Task CreatePasswordResetTokenAsync(PasswordResetToken request);
 
