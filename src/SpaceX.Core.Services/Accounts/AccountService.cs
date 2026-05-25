@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
+
 using SpaceX.Core.Domain.Entities;
 using SpaceX.Core.Domain.Entities.Enums;
 using SpaceX.Core.Domain.Models.Requests;
@@ -26,7 +27,7 @@ public class AccountService : IAccountService
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var normalizedEmail = request.Email.Trim().ToLowerInvariant();
+        var normalizedEmail = NormalizeEmail(request.Email);
         var encryptedEmail = _encryptionHelper.Encrypt(normalizedEmail);
 
         var existingAccount = await _accountRepository.GetAccountByEmailAsync(encryptedEmail);
@@ -36,6 +37,8 @@ public class AccountService : IAccountService
             throw new ValidationException("Email is already registered to other account.");
         }
 
+        var verificationToken = RandomGeneratorHelper.GenerateRefreshToken();
+
         var account = new Account()
         {
             FirstName = request.FirstName.Trim(),
@@ -44,10 +47,30 @@ public class AccountService : IAccountService
             Password = SecurityHelper.HashPassword(request.Password),
             Status = AccountStatus.AwaitingConfirmation,
             IsVerified = false,
+            VerificationToken = SecurityHelper.HashString(verificationToken),
             CreatedAtUtc = DateTimeOffset.UtcNow
         };
 
         await _accountRepository.CreateAccountAsync(account);
+
+        //TODO: Send verification email
+    }
+
+    public async Task<bool> CheckIsEmailRegisteredAsync(string email)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(email);
+
+        var normalizedEmail = NormalizeEmail(email);
+        var encryptedEmail = _encryptionHelper.Encrypt(normalizedEmail);
+
+        var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail);
+
+        return account is not null;
+    }
+
+    private static string NormalizeEmail(string email)
+    {
+        return email.Trim().ToLowerInvariant();
     }
 }
 

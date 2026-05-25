@@ -1,4 +1,4 @@
-﻿using SpaceX.Core.Domain.Entities;
+using SpaceX.Core.Domain.Entities;
 using SpaceX.Infrastructure.Database.Models;
 
 namespace SpaceX.Infrastructure.Database.Mappings;
@@ -14,6 +14,19 @@ public static class RefreshTokenDataModelMappings
             AccountId = domain.AccountId,
             Token = domain.Token,
             ExpiresAtUtc = domain.ExpiresAtUtc
+        };
+    }
+
+    public static RefreshToken ToDomain(this RefreshTokenDataModel dataModel)
+    {
+        ArgumentNullException.ThrowIfNull(dataModel);
+
+        return new RefreshToken
+        {
+            Id = dataModel.Id,
+            AccountId = dataModel.AccountId,
+            Token = dataModel.Token,
+            ExpiresAtUtc = dataModel.ExpiresAtUtc
         };
     }
 }

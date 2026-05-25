@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
 using SpaceX.Infrastructure.Database.Models;
 
 namespace SpaceX.Infrastructure.Database.Context;

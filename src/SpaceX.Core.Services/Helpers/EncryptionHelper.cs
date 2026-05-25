@@ -1,6 +1,8 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
+
 using Microsoft.Extensions.Options;
+
 using SpaceX.Core.Domain.Configuration;
 
 namespace SpaceX.Core.Services.Helpers;

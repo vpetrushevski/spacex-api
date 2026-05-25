@@ -1,4 +1,4 @@
-﻿namespace SpaceX.Core.Domain.Entities.Enums;
+namespace SpaceX.Core.Domain.Entities.Enums;
 
 public enum AccountStatus
 {

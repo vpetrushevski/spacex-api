@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
 using SpaceX.Core.Domain.Entities;
 using SpaceX.Infrastructure.Database.Context;
 using SpaceX.Infrastructure.Database.Mappings;
@@ -39,6 +40,16 @@ public class AccountRepository : IAccountRepository
         var mappedRequest = request.ToDataModel();
 
         await _context.Accounts.AddAsync(mappedRequest);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAccountAsync(Account request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var mappedRequest = request.ToDataModel();
+
+        _context.Accounts.Update(mappedRequest);
         await _context.SaveChangesAsync();
     }
 }

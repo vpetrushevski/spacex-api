@@ -1,6 +1,6 @@
-﻿namespace SpaceX.WebApi.Contracts.Requests;
+namespace SpaceX.WebApi.Contracts.Requests;
 
-public class CreateAccountRequest
+public sealed record CreateAccountRequest
 {
     public required string FirstName { get; init; }
 

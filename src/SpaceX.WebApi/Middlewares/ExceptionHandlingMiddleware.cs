@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
-using SpaceX.Core.Domain.Models.Responses;
+
+using SpaceX.WebApi.Contracts.Responses;
 
 namespace SpaceX.WebApi.Middlewares;
 

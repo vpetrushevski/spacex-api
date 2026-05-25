@@ -1,4 +1,4 @@
-﻿namespace SpaceX.Core.Domain.Entities;
+namespace SpaceX.Core.Domain.Entities;
 
 public class RefreshToken
 {
@@ -9,5 +9,7 @@ public class RefreshToken
     public required string Token { get; init; }
 
     public DateTimeOffset ExpiresAtUtc { get; init; }
+
+    public Account Account { get; set; } = null!;
 }
 

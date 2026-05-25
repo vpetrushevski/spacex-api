@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using SpaceX.Core.Domain.Models.Responses;
+
+using SpaceX.WebApi.Contracts.Responses;
 
 namespace SpaceX.WebApi.Extensions;
 
