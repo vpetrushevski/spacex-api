@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using SpaceX.Core.Services.DependencyInjection;
 using SpaceX.Infrastructure.Database.DependencyInjection;
 

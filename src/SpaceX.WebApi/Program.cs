@@ -1,4 +1,4 @@
-﻿using SpaceX.Ioc.DependencyInjection;
+using SpaceX.Ioc.DependencyInjection;
 using SpaceX.WebApi.Extensions;
 using SpaceX.WebApi.Middlewares;
 

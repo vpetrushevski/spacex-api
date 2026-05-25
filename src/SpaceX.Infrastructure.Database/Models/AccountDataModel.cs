@@ -1,4 +1,4 @@
-﻿using SpaceX.Core.Domain.Entities.Enums;
+using SpaceX.Core.Domain.Entities.Enums;
 
 namespace SpaceX.Infrastructure.Database.Models;
 
@@ -15,4 +15,6 @@ public class AccountDataModel : BaseDataModel
     public AccountStatus Status { get; set; }
 
     public bool IsVerified { get; set; }
+
+    public string? VerificationToken { get; set; }
 }

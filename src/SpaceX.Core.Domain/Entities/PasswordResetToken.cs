@@ -1,4 +1,4 @@
-﻿namespace SpaceX.Core.Domain.Entities;
+namespace SpaceX.Core.Domain.Entities;
 
 public class PasswordResetToken
 {

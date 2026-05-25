@@ -9,4 +9,10 @@
   <ItemGroup>
     <ProjectReference Include="..\SpaceX.Core.Domain\SpaceX.Core.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Authentication\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
 </Project>

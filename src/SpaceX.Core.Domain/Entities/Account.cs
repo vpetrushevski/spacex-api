@@ -1,4 +1,4 @@
-﻿using SpaceX.Core.Domain.Entities.Enums;
+using SpaceX.Core.Domain.Entities.Enums;
 
 namespace SpaceX.Core.Domain.Entities;
 
@@ -12,12 +12,14 @@ public class Account
 
     public required string Email { get; init; }
 
-    public required string Password { get; init; }
+    public required string Password { get; set; }
 
-    public AccountStatus Status { get; init; }
+    public AccountStatus Status { get; set; }
 
-    public bool IsVerified { get; init; }
+    public bool IsVerified { get; set; }
 
-    public DateTimeOffset CreatedAtUtc { get; set; }
+    public string? VerificationToken { get; set; }
+
+    public DateTimeOffset CreatedAtUtc { get; init; }
 }
 

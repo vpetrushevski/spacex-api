@@ -1,4 +1,4 @@
-﻿using SpaceX.Core.Domain.Entities;
+using SpaceX.Core.Domain.Entities;
 using SpaceX.Infrastructure.Database.Models;
 
 namespace SpaceX.Infrastructure.Database.Mappings;
@@ -35,6 +35,7 @@ public static class AccountDataModelMappings
             Password = domain.Password,
             Status = domain.Status,
             IsVerified = domain.IsVerified,
+            VerificationToken = domain.VerificationToken,
             CreatedAtUtc = domain.CreatedAtUtc
         };
     }

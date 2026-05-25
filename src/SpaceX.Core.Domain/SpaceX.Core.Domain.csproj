@@ -13,6 +13,7 @@
     <None Remove="Models\Requests\" />
     <None Remove="Configuration\" />
     <None Remove="Models\Responses\" />
+    <None Remove="Models\Authentication\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -21,5 +22,6 @@
     <Folder Include="Models\Requests\" />
     <Folder Include="Configuration\" />
     <Folder Include="Models\Responses\" />
+    <Folder Include="Models\Authentication\" />
   </ItemGroup>
 </Project>

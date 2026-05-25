@@ -57,6 +57,9 @@ namespace SpaceX.Infrastructure.Database.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("VerificationToken")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")

@@ -1,4 +1,4 @@
-﻿namespace SpaceX.Core.Domain.Configuration;
+namespace SpaceX.Core.Domain.Configuration;
 
 public class EncryptionConfiguration
 {

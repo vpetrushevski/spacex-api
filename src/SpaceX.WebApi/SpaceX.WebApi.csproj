@@ -25,6 +25,8 @@
     <None Remove="Contracts\" />
     <None Remove="Contracts\Requests\" />
     <None Remove="Mappings\" />
+    <None Remove="Filters\" />
+    <None Remove="Contracts\Responses\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -33,6 +35,8 @@
     <Folder Include="Contracts\" />
     <Folder Include="Contracts\Requests\" />
     <Folder Include="Mappings\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Contracts\Responses\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpaceX.Core.Domain\SpaceX.Core.Domain.csproj">

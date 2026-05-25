@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 using SpaceX.Infrastructure.Database.Context;
 using SpaceX.Infrastructure.Database.Repositories;
 using SpaceX.Infrastructure.Interfaces.Database.Repositories;
@@ -18,6 +19,7 @@ public static class DatabaseServiceCollectionExtensions
         });
 
         services.AddTransient<IAccountRepository, AccountRepository>();
+        services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
 
         return services;
     }

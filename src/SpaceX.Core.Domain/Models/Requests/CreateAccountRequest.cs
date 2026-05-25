@@ -1,4 +1,4 @@
-﻿namespace SpaceX.Core.Domain.Models.Requests;
+namespace SpaceX.Core.Domain.Models.Requests;
 
 public class CreateAccountRequest
 {

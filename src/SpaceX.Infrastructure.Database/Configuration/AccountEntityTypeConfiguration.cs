@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using SpaceX.Infrastructure.Database.Models;
 
 namespace SpaceX.Infrastructure.Database.Configuration;

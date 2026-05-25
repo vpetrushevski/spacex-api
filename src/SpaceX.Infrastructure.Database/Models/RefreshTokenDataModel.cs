@@ -1,4 +1,4 @@
-﻿namespace SpaceX.Infrastructure.Database.Models;
+namespace SpaceX.Infrastructure.Database.Models;
 
 public class RefreshTokenDataModel : BaseDataModel
 {
