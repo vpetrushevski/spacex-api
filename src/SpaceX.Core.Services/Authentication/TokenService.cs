@@ -32,7 +32,7 @@ public class TokenService : ITokenService
         _jwtTokenConfiguration = jwtTokenConfiguration.Value;
     }
 
-    public async Task<LoginResponse> GenerateTokens(Account account, RefreshToken? refreshToken = null)
+    public async Task<LoginResponse> GenerateTokens(Account account, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(account);
 
@@ -70,12 +70,7 @@ public class TokenService : ITokenService
             ExpiresAtUtc = DateTimeOffset.UtcNow.AddDays(_jwtTokenConfiguration.RefreshTokenValidityInDays)
         };
 
-        await _authenticationRepository.CreateRefreshTokenAsync(refreshTokenRequest);
-
-        if (refreshToken is not null)
-        {
-            await _authenticationRepository.DeleteRefreshTokenAsync(refreshToken.AccountId, refreshToken.Token);
-        }
+        await _authenticationRepository.CreateRefreshTokenAsync(refreshTokenRequest, cancellationToken);
 
         return new LoginResponse
         {

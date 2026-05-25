@@ -19,38 +19,45 @@ public class AccountRepository : IAccountRepository
 
     private IQueryable<AccountDataModel> Accounts => _context.Accounts.AsNoTracking();
 
-    public async Task<Account?> GetAccountAsync(Guid id)
+    public async Task<Account?> GetAccountAsync(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await Accounts.FirstOrDefaultAsync(x => x.Id == id);
+        var entity = await Accounts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         return entity?.ToDomain();
     }
 
-    public async Task<Account?> GetAccountByEmailAsync(string email)
+    public async Task<Account?> GetAccountByEmailAsync(string email, CancellationToken cancellationToken)
     {
-        var entity = await Accounts.FirstOrDefaultAsync(x => x.Email == email);
+        var entity = await Accounts.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
 
         return entity?.ToDomain();
     }
 
-    public async Task CreateAccountAsync(Account request)
+    public async Task CreateAccountAsync(Account request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
         var mappedRequest = request.ToDataModel();
 
-        await _context.Accounts.AddAsync(mappedRequest);
-        await _context.SaveChangesAsync();
+        await _context.Accounts.AddAsync(mappedRequest, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAccountAsync(Account request)
+    public async Task UpdateAccountAsync(Account request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var mappedRequest = request.ToDataModel();
+        var entity = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken)
+            ?? throw new InvalidOperationException("Account does not exist.");
 
-        _context.Accounts.Update(mappedRequest);
-        await _context.SaveChangesAsync();
+        entity.FirstName = request.FirstName;
+        entity.LastName = request.LastName;
+        entity.Email = request.Email;
+        entity.Password = request.Password;
+        entity.Status = request.Status;
+        entity.IsVerified = request.IsVerified;
+
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }
 

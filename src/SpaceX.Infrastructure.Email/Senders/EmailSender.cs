@@ -30,7 +30,7 @@ public class EmailSender : IEmailSender
         _templateProvider = templateProvider;
     }
 
-    public async Task SendVerificationEmailAsync(EmailMessage message, CancellationToken cancellationToken = default)
+    public async Task SendVerificationEmailAsync(EmailMessage message, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);
 
@@ -48,7 +48,7 @@ public class EmailSender : IEmailSender
         await SendAsync(message.Email, EmailSubjectConstants.VerifyAccountSubject, html, cancellationToken);
     }
 
-    public async Task SendForgotPasswordEmailAsync(EmailMessage message, CancellationToken cancellationToken = default)
+    public async Task SendForgotPasswordEmailAsync(EmailMessage message, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);
 
@@ -66,7 +66,7 @@ public class EmailSender : IEmailSender
         await SendAsync(message.Email, EmailSubjectConstants.ResetPasswordSubject, html, cancellationToken);
     }
 
-    public async Task SendPasswordChangedEmailAsync(EmailMessage message, CancellationToken cancellationToken = default)
+    public async Task SendPasswordChangedEmailAsync(EmailMessage message, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);
 
