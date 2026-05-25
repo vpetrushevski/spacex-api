@@ -29,7 +29,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         return entity?.ToDomain();
     }
 
-    public async Task AddRefreshTokenAsync(RefreshToken refreshToken)
+    public async Task CreateRefreshTokenAsync(RefreshToken refreshToken)
     {
         ArgumentNullException.ThrowIfNull(refreshToken);
 
@@ -37,7 +37,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task RemoveRefreshTokenAsync(Guid accountId, string token)
+    public async Task DeleteRefreshTokenAsync(Guid accountId, string token)
     {
         var entity = await RefreshTokens.FirstOrDefaultAsync(x => x.AccountId == accountId && x.Token == token);
 
@@ -50,7 +50,22 @@ public class AuthenticationRepository : IAuthenticationRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task RemoveExpiredRefreshTokensAsync()
+    public async Task DeleteRefreshTokensByAccountIdAsync(Guid accountId)
+    {
+        var tokens = await _context.RefreshTokens
+            .Where(x => x.AccountId == accountId)
+            .ToListAsync();
+
+        if (tokens.Count == 0)
+        {
+            return;
+        }
+
+        _context.RefreshTokens.RemoveRange(tokens);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteExpiredRefreshTokensAsync()
     {
         var tokensToRemove = await _context.RefreshTokens
             .Where(x => x.ExpiresAtUtc < DateTimeOffset.UtcNow)

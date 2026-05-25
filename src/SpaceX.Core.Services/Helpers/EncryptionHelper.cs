@@ -25,18 +25,17 @@ public sealed class EncryptionHelper
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(plainText);
 
-        byte[] key = GetEncryptionKey();
+        var key = GetEncryptionKey();
+        var iv = GetInitializationVector();
 
         using var aes = Aes.Create();
         aes.Key = key;
-        aes.GenerateIV();
+        aes.IV = iv;
         aes.Mode = CipherMode.CBC;
         aes.Padding = PaddingMode.PKCS7;
 
         using var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
         using var memoryStream = new MemoryStream();
-
-        memoryStream.Write(aes.IV, 0, aes.IV.Length);
 
         using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
         using (var streamWriter = new StreamWriter(cryptoStream, Encoding.UTF8))
@@ -51,17 +50,10 @@ public sealed class EncryptionHelper
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(encryptedText);
 
-        byte[] fullCipher = Convert.FromBase64String(encryptedText);
+        var cipherText = Convert.FromBase64String(encryptedText);
 
-        if (fullCipher.Length <= AesIvSizeInBytes)
-        {
-            throw new InvalidOperationException("Invalid encrypted text.");
-        }
-
-        byte[] iv = fullCipher[..AesIvSizeInBytes];
-        byte[] cipherText = fullCipher[AesIvSizeInBytes..];
-
-        byte[] key = GetEncryptionKey();
+        var key = GetEncryptionKey();
+        var iv = GetInitializationVector();
 
         using var aes = Aes.Create();
         aes.Key = key;
@@ -79,7 +71,7 @@ public sealed class EncryptionHelper
 
     private byte[] GetEncryptionKey()
     {
-        byte[] key = Convert.FromBase64String(_configuration.EncryptionKey);
+        var key = Convert.FromBase64String(_configuration.EncryptionKey);
 
         if (key.Length != AesKeySizeInBytes)
         {
@@ -88,7 +80,16 @@ public sealed class EncryptionHelper
 
         return key;
     }
+
+    private byte[] GetInitializationVector()
+    {
+        var iv = Convert.FromBase64String(_configuration.InitializationVector);
+
+        if (iv.Length != AesIvSizeInBytes)
+        {
+            throw new InvalidOperationException("Initialization vector must be 16 bytes Base64 string.");
+        }
+
+        return iv;
+    }
 }
-
-
-

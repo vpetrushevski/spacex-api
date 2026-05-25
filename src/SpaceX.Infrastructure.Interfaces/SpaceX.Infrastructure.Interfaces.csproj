@@ -9,10 +9,12 @@
   <ItemGroup>
     <None Remove="Database\" />
     <None Remove="Database\Repositories\" />
+    <None Remove="Email\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\" />
     <Folder Include="Database\Repositories\" />
+    <Folder Include="Email\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpaceX.Core.Domain\SpaceX.Core.Domain.csproj" />

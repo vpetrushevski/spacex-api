@@ -9,11 +9,13 @@ using Microsoft.IdentityModel.Tokens;
 using SpaceX.Core.Domain.Configuration;
 using SpaceX.Core.Domain.Entities;
 using SpaceX.Core.Domain.Entities.Enums;
+using SpaceX.Core.Domain.Models.Email;
 using SpaceX.Core.Domain.Models.Requests;
 using SpaceX.Core.Domain.Models.Responses;
 using SpaceX.Core.Services.Helpers;
 using SpaceX.Core.Services.Interfaces.Authentication;
 using SpaceX.Infrastructure.Interfaces.Database.Repositories;
+using SpaceX.Infrastructure.Interfaces.Email;
 
 namespace SpaceX.Core.Services.Authentication;
 
@@ -23,6 +25,7 @@ public class AuthenticationService : IAuthenticationService
     private readonly IAuthenticationRepository _authenticationRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly ITokenService _tokenService;
+    private readonly IEmailBackgroundDispatcher _emailBackgroundDispatcher;
     private readonly EncryptionHelper _encryptionHelper;
     private readonly JwtTokenConfiguration _jwtTokenConfiguration;
 
@@ -31,6 +34,7 @@ public class AuthenticationService : IAuthenticationService
         IAuthenticationRepository authenticationRepository,
         ICurrentUserService currentUserService,
         ITokenService tokenService,
+        IEmailBackgroundDispatcher emailBackgroundDispatcher,
         EncryptionHelper encryptionHelper,
         IOptions<JwtTokenConfiguration> jwtTokenConfiguration)
     {
@@ -40,6 +44,7 @@ public class AuthenticationService : IAuthenticationService
         _authenticationRepository = authenticationRepository;
         _currentUserService = currentUserService;
         _tokenService = tokenService;
+        _emailBackgroundDispatcher = emailBackgroundDispatcher;
         _encryptionHelper = encryptionHelper;
         _jwtTokenConfiguration = jwtTokenConfiguration.Value;
     }
@@ -54,12 +59,12 @@ public class AuthenticationService : IAuthenticationService
         var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail)
             ?? throw new ValidationException("Email is not registered yet.");
 
+        EnsureAccountIsActive(account.Status);
+
         if (!BCrypt.Net.BCrypt.Verify(request.Password, account.Password))
         {
             throw new ValidationException("Wrong password.");
         }
-
-        EnsureAccountIsActive(account.Status);
 
         return await _tokenService.GenerateTokens(account);
     }
@@ -78,6 +83,8 @@ public class AuthenticationService : IAuthenticationService
             ?? throw new ValidationException("Access token is invalid.");
 
         EnsureAccountIsActive(account.Status);
+
+        await _authenticationRepository.DeleteRefreshTokensByAccountIdAsync(account.Id);
 
         return await _tokenService.GenerateTokens(account);
     }
@@ -149,7 +156,7 @@ public class AuthenticationService : IAuthenticationService
         var refreshToken = await _authenticationRepository.GetRefreshTokenAsync(currentUser.AccountId, hashedRefreshToken)
             ?? throw new ValidationException("Refresh token is invalid.");
 
-        await _authenticationRepository.RemoveRefreshTokenAsync(refreshToken.AccountId, refreshToken.Token);
+        await _authenticationRepository.DeleteRefreshTokenAsync(refreshToken.AccountId, refreshToken.Token);
     }
 
     public async Task SendVerificationEmailAsync(string email)
@@ -164,7 +171,15 @@ public class AuthenticationService : IAuthenticationService
 
         EnsureAccountIsAwaitingConfirmation(account.Status);
 
-        //TODO: Send verification email
+        await _emailBackgroundDispatcher.EnqueueAsync(new EmailMessage
+        {
+            Type = EmailType.Verification,
+            Email = normalizedEmail,
+            FirstName = account.FirstName,
+            LastName = account.LastName,
+            AccountId = account.Id,
+            Token = account.VerificationToken
+        });
     }
 
     public async Task VerifyAccountAsync(VerifyAccountRequest request)
@@ -219,7 +234,15 @@ public class AuthenticationService : IAuthenticationService
 
         await _authenticationRepository.CreatePasswordResetTokenAsync(passwordResetToken);
 
-        //TODO: Send reset password email
+        await _emailBackgroundDispatcher.EnqueueAsync(new EmailMessage
+        {
+            Type = EmailType.ForgotPassword,
+            Email = normalizedEmail,
+            FirstName = account.FirstName,
+            LastName = account.LastName,
+            AccountId = account.Id,
+            Token = token
+        });
     }
 
     public async Task ResetPasswordAsync(ResetPasswordRequest request)
@@ -234,11 +257,11 @@ public class AuthenticationService : IAuthenticationService
         var hashedToken = SecurityHelper.HashString(request.ResetPasswordToken);
 
         var passwordResetToken = await _authenticationRepository.GetPasswordResetTokenByAccountIdAndHashedTokenAsync(account.Id, hashedToken)
-            ?? throw new ValidationException("Token is not valid.");
+            ?? throw new ValidationException("Password reset token is not valid.");
 
         if (passwordResetToken.ExpiresAtUtc < DateTimeOffset.UtcNow)
         {
-            throw new ValidationException("Token is expired.");
+            throw new ValidationException("Password reset token is expired.");
         }
 
         account.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
@@ -252,7 +275,13 @@ public class AuthenticationService : IAuthenticationService
             await _authenticationRepository.DeletePasswordResetTokensAsync(tokens);
         }
 
-        //TODO: Send changed password confirmation email
+        await _emailBackgroundDispatcher.EnqueueAsync(new EmailMessage
+        {
+            Type = EmailType.PasswordChanged,
+            Email = _encryptionHelper.Decrypt(account.Email),
+            FirstName = account.FirstName,
+            LastName = account.LastName
+        });
     }
 
     public async Task ChangePasswordAsync(ChangePasswordRequest request)

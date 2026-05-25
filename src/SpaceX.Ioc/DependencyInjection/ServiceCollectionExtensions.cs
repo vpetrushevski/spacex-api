@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using SpaceX.Core.Services.DependencyInjection;
+using SpaceX.Infrastructure.Email.DependencyInjection;
 using SpaceX.Infrastructure.Database.DependencyInjection;
 
 namespace SpaceX.Ioc.DependencyInjection;
@@ -21,6 +22,7 @@ public static class ServiceCollectionExtensions
         services.AddConfiguration(configuration);
 
         services.AddBusinessServices();
+        services.AddEmailServices();
 
         return services;
     }

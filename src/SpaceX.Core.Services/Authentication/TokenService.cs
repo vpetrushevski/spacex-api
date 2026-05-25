@@ -70,11 +70,11 @@ public class TokenService : ITokenService
             ExpiresAtUtc = DateTimeOffset.UtcNow.AddDays(_jwtTokenConfiguration.RefreshTokenValidityInDays)
         };
 
-        await _authenticationRepository.AddRefreshTokenAsync(refreshTokenRequest);
+        await _authenticationRepository.CreateRefreshTokenAsync(refreshTokenRequest);
 
         if (refreshToken is not null)
         {
-            await _authenticationRepository.RemoveRefreshTokenAsync(refreshToken.AccountId, refreshToken.Token);
+            await _authenticationRepository.DeleteRefreshTokenAsync(refreshToken.AccountId, refreshToken.Token);
         }
 
         return new LoginResponse
