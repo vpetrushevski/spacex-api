@@ -9,11 +9,11 @@ public class EmailBackgroundDispatcher : IEmailBackgroundDispatcher
 {
     private readonly Channel<EmailMessage> _channel = Channel.CreateUnbounded<EmailMessage>();
 
-    public async Task EnqueueAsync(EmailMessage message)
+    public async Task EnqueueAsync(EmailMessage message, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);
 
-        await _channel.Writer.WriteAsync(message);
+        await _channel.Writer.WriteAsync(message, cancellationToken);
     }
 
     public IAsyncEnumerable<EmailMessage> ReadAllAsync(CancellationToken cancellationToken)

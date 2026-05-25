@@ -27,14 +27,14 @@ public class AccountService : IAccountService
         _encryptionHelper = encryptionHelper;
     }
 
-    public async Task CreateAccountAsync(CreateAccountRequest request)
+    public async Task CreateAccountAsync(CreateAccountRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
         var normalizedEmail = NormalizeEmail(request.Email);
         var encryptedEmail = _encryptionHelper.Encrypt(normalizedEmail);
 
-        var existingAccount = await _accountRepository.GetAccountByEmailAsync(encryptedEmail);
+        var existingAccount = await _accountRepository.GetAccountByEmailAsync(encryptedEmail, cancellationToken);
 
         if (existingAccount is not null)
         {
@@ -56,7 +56,7 @@ public class AccountService : IAccountService
             CreatedAtUtc = DateTimeOffset.UtcNow
         };
 
-        await _accountRepository.CreateAccountAsync(account);
+        await _accountRepository.CreateAccountAsync(account, cancellationToken);
 
         await _emailBackgroundDispatcher.EnqueueAsync(new EmailMessage
         {
@@ -66,17 +66,17 @@ public class AccountService : IAccountService
             LastName = account.LastName,
             AccountId = account.Id,
             Token = verificationToken
-        });
+        }, cancellationToken);
     }
 
-    public async Task<bool> CheckIsEmailRegisteredAsync(string email)
+    public async Task<bool> CheckIsEmailRegisteredAsync(string email, CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(email);
 
         var normalizedEmail = NormalizeEmail(email);
         var encryptedEmail = _encryptionHelper.Encrypt(normalizedEmail);
 
-        var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail);
+        var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail, cancellationToken);
 
         return account is not null;
     }

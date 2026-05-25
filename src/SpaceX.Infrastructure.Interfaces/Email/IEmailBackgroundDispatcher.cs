@@ -4,5 +4,5 @@ namespace SpaceX.Infrastructure.Interfaces.Email;
 
 public interface IEmailBackgroundDispatcher
 {
-    Task EnqueueAsync(EmailMessage message);
+    Task EnqueueAsync(EmailMessage message, CancellationToken cancellationToken = default);
 }

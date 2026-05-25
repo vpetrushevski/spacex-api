@@ -20,41 +20,28 @@ public class AuthenticationRepository : IAuthenticationRepository
     private IQueryable<RefreshTokenDataModel> RefreshTokens => _context.RefreshTokens.AsNoTracking();
     private IQueryable<PasswordResetTokenDataModel> PasswordResetTokens => _context.PasswordResetTokens.AsNoTracking();
 
-    public async Task<RefreshToken?> GetRefreshTokenAsync(Guid accountId, string token)
+    public async Task<RefreshToken?> GetRefreshTokenAsync(Guid accountId, string token, CancellationToken cancellationToken)
     {
         var entity = await RefreshTokens
             .Include(x => x.Account)
-            .FirstOrDefaultAsync(x => x.AccountId == accountId && x.Token == token && x.ExpiresAtUtc >= DateTimeOffset.UtcNow);
+            .FirstOrDefaultAsync(x => x.AccountId == accountId && x.Token == token && x.ExpiresAtUtc >= DateTimeOffset.UtcNow, cancellationToken);
 
         return entity?.ToDomain();
     }
 
-    public async Task CreateRefreshTokenAsync(RefreshToken refreshToken)
+    public async Task CreateRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(refreshToken);
 
-        await _context.RefreshTokens.AddAsync(refreshToken.ToDataModel());
-        await _context.SaveChangesAsync();
+        await _context.RefreshTokens.AddAsync(refreshToken.ToDataModel(), cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteRefreshTokenAsync(Guid accountId, string token)
-    {
-        var entity = await RefreshTokens.FirstOrDefaultAsync(x => x.AccountId == accountId && x.Token == token);
-
-        if (entity is null)
-        {
-            return;
-        }
-
-        _context.RefreshTokens.Remove(entity);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteRefreshTokensByAccountIdAsync(Guid accountId)
+    public async Task DeleteRefreshTokensByAccountIdAsync(Guid accountId, CancellationToken cancellationToken)
     {
         var tokens = await _context.RefreshTokens
             .Where(x => x.AccountId == accountId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         if (tokens.Count == 0)
         {
@@ -62,14 +49,14 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
 
         _context.RefreshTokens.RemoveRange(tokens);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteExpiredRefreshTokensAsync()
+    public async Task DeleteExpiredRefreshTokensAsync(CancellationToken cancellationToken)
     {
         var tokensToRemove = await _context.RefreshTokens
             .Where(x => x.ExpiresAtUtc < DateTimeOffset.UtcNow)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         if (tokensToRemove.Count == 0)
         {
@@ -77,41 +64,34 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
 
         _context.RefreshTokens.RemoveRange(tokensToRemove);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task CreatePasswordResetTokenAsync(PasswordResetToken passwordResetToken)
+    public async Task CreatePasswordResetTokenAsync(PasswordResetToken passwordResetToken, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(passwordResetToken);
 
-        await _context.PasswordResetTokens.AddAsync(passwordResetToken.ToDataModel());
-        await _context.SaveChangesAsync();
+        await _context.PasswordResetTokens.AddAsync(passwordResetToken.ToDataModel(), cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IReadOnlyList<PasswordResetToken>> GetPasswordResetTokensAsync(Guid accountId)
+    public async Task<IReadOnlyList<PasswordResetToken>> GetPasswordResetTokensAsync(Guid accountId, CancellationToken cancellationToken)
     {
         var entities = await PasswordResetTokens
             .Where(x => x.AccountId == accountId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return entities.Select(x => x.ToDomain()).ToList();
     }
 
-    public async Task<PasswordResetToken?> GetPasswordResetTokenByAccountIdAndHashedTokenAsync(Guid accountId, string? hashedToken = null)
+    public async Task<PasswordResetToken?> GetPasswordResetTokenByAccountIdAndHashedTokenAsync(Guid accountId, string hashedToken, CancellationToken cancellationToken)
     {
-        var query = PasswordResetTokens.Where(x => x.AccountId == accountId);
-
-        if (!string.IsNullOrWhiteSpace(hashedToken))
-        {
-            query = query.Where(x => x.Token == hashedToken);
-        }
-
-        var entity = await query.FirstOrDefaultAsync();
+        var entity = await PasswordResetTokens.FirstOrDefaultAsync(x => x.AccountId == accountId && x.Token == hashedToken, cancellationToken);
 
         return entity?.ToDomain();
     }
 
-    public async Task DeletePasswordResetTokensAsync(IReadOnlyList<PasswordResetToken> passwordResetTokens)
+    public async Task DeletePasswordResetTokensAsync(IReadOnlyList<PasswordResetToken> passwordResetTokens, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(passwordResetTokens);
 
@@ -124,7 +104,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         var entities = await _context.PasswordResetTokens
             .Where(x => ids.Contains(x.Id))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         if (entities.Count == 0)
         {
@@ -132,6 +112,6 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
 
         _context.PasswordResetTokens.RemoveRange(entities);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

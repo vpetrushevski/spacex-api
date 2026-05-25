@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 
 using Microsoft.Extensions.Options;
@@ -49,14 +50,14 @@ public class AuthenticationService : IAuthenticationService
         _jwtTokenConfiguration = jwtTokenConfiguration.Value;
     }
 
-    public async Task<LoginResponse> LoginAsync(LoginRequest request)
+    public async Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
         var normalizedEmail = NormalizeEmail(request.Email);
         var encryptedEmail = _encryptionHelper.Encrypt(normalizedEmail);
 
-        var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail)
+        var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail, cancellationToken)
             ?? throw new ValidationException("Email is not registered yet.");
 
         EnsureAccountIsActive(account.Status);
@@ -66,10 +67,10 @@ public class AuthenticationService : IAuthenticationService
             throw new ValidationException("Wrong password.");
         }
 
-        return await _tokenService.GenerateTokens(account);
+        return await _tokenService.GenerateTokens(account, cancellationToken);
     }
 
-    public async Task<LoginResponse> AuthorizeAsync(string accessToken)
+    public async Task<LoginResponse> AuthorizeAsync(string accessToken, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(accessToken))
         {
@@ -79,17 +80,17 @@ public class AuthenticationService : IAuthenticationService
         var claimsIdentity = ValidateAccessToken(accessToken);
         var accountId = GetAccountIdFromClaims(claimsIdentity);
 
-        var account = await _accountRepository.GetAccountAsync(accountId)
+        var account = await _accountRepository.GetAccountAsync(accountId, cancellationToken)
             ?? throw new ValidationException("Access token is invalid.");
 
         EnsureAccountIsActive(account.Status);
 
-        await _authenticationRepository.DeleteRefreshTokensByAccountIdAsync(account.Id);
+        await _authenticationRepository.DeleteRefreshTokensByAccountIdAsync(account.Id, cancellationToken);
 
-        return await _tokenService.GenerateTokens(account);
+        return await _tokenService.GenerateTokens(account, cancellationToken);
     }
 
-    public async Task<LoginResponse> RefreshTokenAsync(RefreshTokenRequest request)
+    public async Task<LoginResponse> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -103,12 +104,14 @@ public class AuthenticationService : IAuthenticationService
 
         var hashedRefreshToken = SecurityHelper.HashString(request.RefreshToken);
 
-        var refreshToken = await _authenticationRepository.GetRefreshTokenAsync(accountId, hashedRefreshToken)
+        var refreshToken = await _authenticationRepository.GetRefreshTokenAsync(accountId, hashedRefreshToken, cancellationToken)
             ?? throw new ValidationException("Refresh token is invalid.");
 
         EnsureAccountIsActive(refreshToken.Account.Status);
 
-        return await _tokenService.GenerateTokens(refreshToken.Account, refreshToken);
+        await _authenticationRepository.DeleteRefreshTokensByAccountIdAsync(refreshToken.AccountId, cancellationToken);
+
+        return await _tokenService.GenerateTokens(refreshToken.Account, cancellationToken);
     }
 
     public ClaimsIdentity ValidateAccessToken(string accessToken, bool validateExpirationTime = true)
@@ -144,7 +147,7 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    public async Task LogoutAsync(LogoutRequest request)
+    public async Task LogoutAsync(LogoutRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -153,20 +156,20 @@ public class AuthenticationService : IAuthenticationService
 
         var hashedRefreshToken = SecurityHelper.HashString(request.RefreshToken);
 
-        var refreshToken = await _authenticationRepository.GetRefreshTokenAsync(currentUser.AccountId, hashedRefreshToken)
+        var refreshToken = await _authenticationRepository.GetRefreshTokenAsync(currentUser.AccountId, hashedRefreshToken, cancellationToken)
             ?? throw new ValidationException("Refresh token is invalid.");
 
-        await _authenticationRepository.DeleteRefreshTokenAsync(refreshToken.AccountId, refreshToken.Token);
+        await _authenticationRepository.DeleteRefreshTokensByAccountIdAsync(refreshToken.AccountId, cancellationToken);
     }
 
-    public async Task SendVerificationEmailAsync(string email)
+    public async Task SendVerificationEmailAsync(string email, CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(email);
 
         var normalizedEmail = NormalizeEmail(email);
         var encryptedEmail = _encryptionHelper.Encrypt(normalizedEmail);
 
-        var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail)
+        var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail, cancellationToken)
             ?? throw new ValidationException("Email is not registered yet.");
 
         EnsureAccountIsAwaitingConfirmation(account.Status);
@@ -179,14 +182,14 @@ public class AuthenticationService : IAuthenticationService
             LastName = account.LastName,
             AccountId = account.Id,
             Token = account.VerificationToken
-        });
+        }, cancellationToken);
     }
 
-    public async Task VerifyAccountAsync(VerifyAccountRequest request)
+    public async Task VerifyAccountAsync(VerifyAccountRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var account = await _accountRepository.GetAccountAsync(request.AccountId)
+        var account = await _accountRepository.GetAccountAsync(request.AccountId, cancellationToken)
             ?? throw new ValidationException("Account does not exist.");
 
         EnsureAccountIsAwaitingConfirmation(account.Status);
@@ -207,17 +210,17 @@ public class AuthenticationService : IAuthenticationService
         account.IsVerified = true;
         account.VerificationToken = null;
 
-        await _accountRepository.UpdateAccountAsync(account);
+        await _accountRepository.UpdateAccountAsync(account, cancellationToken);
     }
 
-    public async Task SendForgotPasswordEmailAsync(string email)
+    public async Task SendForgotPasswordEmailAsync(string email, CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(email);
 
         var normalizedEmail = NormalizeEmail(email);
         var encryptedEmail = _encryptionHelper.Encrypt(normalizedEmail);
 
-        var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail)
+        var account = await _accountRepository.GetAccountByEmailAsync(encryptedEmail, cancellationToken)
             ?? throw new ValidationException("Email is not registered yet.");
 
         EnsureAccountIsActive(account.Status);
@@ -232,7 +235,7 @@ public class AuthenticationService : IAuthenticationService
             ExpiresAtUtc = DateTimeOffset.UtcNow.AddDays(1)
         };
 
-        await _authenticationRepository.CreatePasswordResetTokenAsync(passwordResetToken);
+        await _authenticationRepository.CreatePasswordResetTokenAsync(passwordResetToken, cancellationToken);
 
         await _emailBackgroundDispatcher.EnqueueAsync(new EmailMessage
         {
@@ -242,21 +245,21 @@ public class AuthenticationService : IAuthenticationService
             LastName = account.LastName,
             AccountId = account.Id,
             Token = token
-        });
+        }, cancellationToken);
     }
 
-    public async Task ResetPasswordAsync(ResetPasswordRequest request)
+    public async Task ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var account = await _accountRepository.GetAccountAsync(request.AccountId)
+        var account = await _accountRepository.GetAccountAsync(request.AccountId, cancellationToken)
             ?? throw new ValidationException("Account does not exist.");
 
         EnsureAccountIsActive(account.Status);
 
         var hashedToken = SecurityHelper.HashString(request.ResetPasswordToken);
 
-        var passwordResetToken = await _authenticationRepository.GetPasswordResetTokenByAccountIdAndHashedTokenAsync(account.Id, hashedToken)
+        var passwordResetToken = await _authenticationRepository.GetPasswordResetTokenByAccountIdAndHashedTokenAsync(account.Id, hashedToken, cancellationToken)
             ?? throw new ValidationException("Password reset token is not valid.");
 
         if (passwordResetToken.ExpiresAtUtc < DateTimeOffset.UtcNow)
@@ -266,13 +269,13 @@ public class AuthenticationService : IAuthenticationService
 
         account.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
 
-        await _accountRepository.UpdateAccountAsync(account);
+        await _accountRepository.UpdateAccountAsync(account, cancellationToken);
 
-        var tokens = await _authenticationRepository.GetPasswordResetTokensAsync(account.Id);
+        var tokens = await _authenticationRepository.GetPasswordResetTokensAsync(account.Id, cancellationToken);
 
         if (tokens.Any())
         {
-            await _authenticationRepository.DeletePasswordResetTokensAsync(tokens);
+            await _authenticationRepository.DeletePasswordResetTokensAsync(tokens, cancellationToken);
         }
 
         await _emailBackgroundDispatcher.EnqueueAsync(new EmailMessage
@@ -281,10 +284,10 @@ public class AuthenticationService : IAuthenticationService
             Email = _encryptionHelper.Decrypt(account.Email),
             FirstName = account.FirstName,
             LastName = account.LastName
-        });
+        }, cancellationToken);
     }
 
-    public async Task ChangePasswordAsync(ChangePasswordRequest request)
+    public async Task ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -303,7 +306,7 @@ public class AuthenticationService : IAuthenticationService
 
         account.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
 
-        await _accountRepository.UpdateAccountAsync(account);
+        await _accountRepository.UpdateAccountAsync(account, cancellationToken);
     }
 
     private ClaimsPrincipal GetClaimsFromExpiredToken(string expiredAccessToken)

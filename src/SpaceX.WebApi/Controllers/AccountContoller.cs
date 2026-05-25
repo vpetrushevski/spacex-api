@@ -24,9 +24,9 @@ public sealed class AccountController : ControllerBase
     /// </summary>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request)
+    public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request, CancellationToken cancellationToken)
     {
-        await _accountService.CreateAccountAsync(request.ToDomain());
+        await _accountService.CreateAccountAsync(request.ToDomain(), cancellationToken);
 
         return StatusCode(StatusCodes.Status201Created);
     }
@@ -36,9 +36,9 @@ public sealed class AccountController : ControllerBase
     /// </summary>
     [HttpGet("check-email/{email}")]
     [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CheckIsEmailRegistered([FromRoute] string email)
+    public async Task<IActionResult> CheckIsEmailRegistered([FromRoute] string email, CancellationToken cancellationToken)
     {
-        var response = await _accountService.CheckIsEmailRegisteredAsync(email);
+        var response = await _accountService.CheckIsEmailRegisteredAsync(email, cancellationToken);
 
         return this.SuccessResponse(response);
     }

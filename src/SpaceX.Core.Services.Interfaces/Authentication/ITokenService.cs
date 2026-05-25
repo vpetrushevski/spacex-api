@@ -5,6 +5,6 @@ namespace SpaceX.Core.Services.Interfaces.Authentication;
 
 public interface ITokenService
 {
-    Task<LoginResponse> GenerateTokens(Account account, RefreshToken? refreshToken = null);
+    Task<LoginResponse> GenerateTokens(Account account, CancellationToken cancellationToken = default);
 }
 
