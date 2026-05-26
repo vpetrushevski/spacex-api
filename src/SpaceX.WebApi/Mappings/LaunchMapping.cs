@@ -181,5 +181,164 @@ public static class LaunchMapping
             Landpad = domain.Landpad
         };
     }
+
+    public static ContractResponses.RocketResponse ToContract(this RocketResponse domain)
+    {
+        ArgumentNullException.ThrowIfNull(domain);
+
+        return new ContractResponses.RocketResponse
+        {
+            Height = domain.Height.ToContract(),
+            Diameter = domain.Diameter.ToContract(),
+            Mass = domain.Mass.ToContract(),
+            FlickrImages = domain.FlickrImages,
+            Name = domain.Name,
+            Type = domain.Type,
+            Active = domain.Active,
+            Stages = domain.Stages,
+            Boosters = domain.Boosters,
+            CostPerLaunch = domain.CostPerLaunch,
+            SuccessRatePct = domain.SuccessRatePct,
+            FirstFlight = domain.FirstFlight,
+            Country = domain.Country,
+            Company = domain.Company,
+            Wikipedia = domain.Wikipedia,
+            Description = domain.Description,
+            Id = domain.Id
+        };
+    }
+
+    public static ContractResponses.RocketDimensionResponse ToContract(this RocketDimensionResponse domain)
+    {
+        ArgumentNullException.ThrowIfNull(domain);
+
+        return new ContractResponses.RocketDimensionResponse
+        {
+            Meters = domain.Meters,
+            Feet = domain.Feet
+        };
+    }
+
+    public static ContractResponses.RocketMassResponse ToContract(this RocketMassResponse domain)
+    {
+        ArgumentNullException.ThrowIfNull(domain);
+
+        return new ContractResponses.RocketMassResponse
+        {
+            Kg = domain.Kg,
+            Lb = domain.Lb
+        };
+    }
+
+    public static ContractResponses.LaunchpadResponse ToContract(this LaunchpadResponse domain)
+    {
+        ArgumentNullException.ThrowIfNull(domain);
+
+        return new ContractResponses.LaunchpadResponse
+        {
+            Images = domain.Images.ToContract(),
+            Name = domain.Name,
+            FullName = domain.FullName,
+            Status = domain.Status,
+            Locality = domain.Locality,
+            Region = domain.Region,
+            Latitude = domain.Latitude,
+            Longitude = domain.Longitude,
+            Details = domain.Details,
+            Id = domain.Id,
+            LaunchAttempts = domain.LaunchAttempts,
+            LaunchSuccesses = domain.LaunchSuccesses,
+            Rockets = domain.Rockets,
+            Timezone = domain.Timezone
+        };
+    }
+
+    public static ContractResponses.LandpadResponse ToContract(this LandpadResponse domain)
+    {
+        ArgumentNullException.ThrowIfNull(domain);
+
+        return new ContractResponses.LandpadResponse
+        {
+            Images = domain.Images.ToContract(),
+            Name = domain.Name,
+            FullName = domain.FullName,
+            Status = domain.Status,
+            Locality = domain.Locality,
+            Region = domain.Region,
+            Latitude = domain.Latitude,
+            Longitude = domain.Longitude,
+            Details = domain.Details,
+            Id = domain.Id,
+            Type = domain.Type,
+            LandingAttempts = domain.LandingAttempts,
+            LandingSuccesses = domain.LandingSuccesses,
+            Wikipedia = domain.Wikipedia
+        };
+    }
+
+    public static ContractResponses.PadImagesResponse ToContract(this PadImagesResponse domain)
+    {
+        ArgumentNullException.ThrowIfNull(domain);
+
+        return new ContractResponses.PadImagesResponse
+        {
+            Large = domain.Large
+        };
+    }
+
+    public static ContractResponses.CapsuleResponse ToContract(this CapsuleResponse domain)
+    {
+        ArgumentNullException.ThrowIfNull(domain);
+
+        return new ContractResponses.CapsuleResponse
+        {
+            ReuseCount = domain.ReuseCount,
+            WaterLandings = domain.WaterLandings,
+            LandLandings = domain.LandLandings,
+            LastUpdate = domain.LastUpdate,
+            Serial = domain.Serial,
+            Status = domain.Status,
+            Type = domain.Type,
+            Id = domain.Id
+        };
+    }
+
+    public static ContractResponses.ShipResponse ToContract(this ShipResponse domain)
+    {
+        ArgumentNullException.ThrowIfNull(domain);
+
+        return new ContractResponses.ShipResponse
+        {
+            LegacyId = domain.LegacyId,
+            Model = domain.Model,
+            Type = domain.Type,
+            Roles = domain.Roles,
+            YearBuilt = domain.YearBuilt,
+            HomePort = domain.HomePort,
+            Status = domain.Status,
+            Latitude = domain.Latitude,
+            Longitude = domain.Longitude,
+            Link = domain.Link,
+            Image = domain.Image,
+            Name = domain.Name,
+            Active = domain.Active,
+            Id = domain.Id
+        };
+    }
+
+    public static ContractResponses.CrewMemberResponse ToContract(this CrewMemberResponse domain)
+    {
+        ArgumentNullException.ThrowIfNull(domain);
+
+        return new ContractResponses.CrewMemberResponse
+        {
+            Name = domain.Name,
+            Agency = domain.Agency,
+            Image = domain.Image,
+            Wikipedia = domain.Wikipedia,
+            Status = domain.Status,
+            Id = domain.Id
+        };
+    }
 }
 
