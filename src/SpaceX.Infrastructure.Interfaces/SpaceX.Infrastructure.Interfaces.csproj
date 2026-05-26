@@ -10,11 +10,15 @@
     <None Remove="Database\" />
     <None Remove="Database\Repositories\" />
     <None Remove="Email\" />
+    <None Remove="ExternalApis\" />
+    <None Remove="ExternalApis\SpaceX\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\" />
     <Folder Include="Database\Repositories\" />
     <Folder Include="Email\" />
+    <Folder Include="ExternalApis\" />
+    <Folder Include="ExternalApis\SpaceX\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpaceX.Core.Domain\SpaceX.Core.Domain.csproj" />

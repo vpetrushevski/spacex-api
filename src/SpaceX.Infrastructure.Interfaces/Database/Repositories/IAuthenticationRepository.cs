@@ -10,8 +10,6 @@ public interface IAuthenticationRepository
 
     Task DeleteRefreshTokensByAccountIdAsync(Guid accountId, CancellationToken cancellationToken = default);
 
-    Task DeleteExpiredRefreshTokensAsync(CancellationToken cancellationToken = default);
-
     Task CreatePasswordResetTokenAsync(PasswordResetToken request, CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<PasswordResetToken>> GetPasswordResetTokensAsync(Guid accountId, CancellationToken cancellationToken = default);

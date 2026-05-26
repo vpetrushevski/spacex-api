@@ -11,12 +11,14 @@
     <None Remove="Helpers\" />
     <None Remove="DependencyInjection\" />
     <None Remove="Authentication\" />
+    <None Remove="Launches\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Accounts\" />
     <Folder Include="Helpers\" />
     <Folder Include="DependencyInjection\" />
     <Folder Include="Authentication\" />
+    <Folder Include="Launches\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpaceX.Core.Services.Interfaces\SpaceX.Core.Services.Interfaces.csproj" />
@@ -28,5 +30,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
   </ItemGroup>
 </Project>

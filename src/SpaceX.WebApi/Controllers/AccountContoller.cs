@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SpaceX.Core.Services.Interfaces;
 using SpaceX.WebApi.Contracts.Requests;
 using SpaceX.WebApi.Contracts.Responses;
-using SpaceX.WebApi.Extensions;
 using SpaceX.WebApi.Mappings;
 
 namespace SpaceX.WebApi.Controllers;
@@ -24,6 +23,8 @@ public sealed class AccountController : ControllerBase
     /// </summary>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request, CancellationToken cancellationToken)
     {
         await _accountService.CreateAccountAsync(request.ToDomain(), cancellationToken);

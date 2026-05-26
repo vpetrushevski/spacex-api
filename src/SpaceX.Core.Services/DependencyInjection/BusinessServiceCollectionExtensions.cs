@@ -5,6 +5,7 @@ using SpaceX.Core.Services.Authentication;
 using SpaceX.Core.Services.Helpers;
 using SpaceX.Core.Services.Interfaces;
 using SpaceX.Core.Services.Interfaces.Authentication;
+using SpaceX.Core.Services.Launches;
 
 namespace SpaceX.Core.Services.DependencyInjection;
 
@@ -20,6 +21,9 @@ public static class BusinessServiceCollectionExtensions
         services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IAuthenticationService, AuthenticationService>();
         services.AddTransient<ITokenService, TokenService>();
+
+        services.AddMemoryCache();
+        services.AddScoped<ILaunchService, LaunchService>();
 
         return services;
     }

@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SpaceX\" />
+    <None Remove="SpaceX\Constants\" />
+    <None Remove="SpaceX\DependencyInjection\" />
+    <None Remove="SpaceX\Options\" />
+    <None Remove="SpaceX\Mappings\" />
+    <None Remove="SpaceX\Contracts\" />
+    <None Remove="SpaceX\Contracts\Requests\" />
+    <None Remove="SpaceX\Contracts\Responses\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SpaceX\" />
+    <Folder Include="SpaceX\Constants\" />
+    <Folder Include="SpaceX\DependencyInjection\" />
+    <Folder Include="SpaceX\Options\" />
+    <Folder Include="SpaceX\Mappings\" />
+    <Folder Include="SpaceX\Contracts\" />
+    <Folder Include="SpaceX\Contracts\Requests\" />
+    <Folder Include="SpaceX\Contracts\Responses\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpaceX.Infrastructure.Interfaces\SpaceX.Infrastructure.Interfaces.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+  </ItemGroup>
+</Project>
