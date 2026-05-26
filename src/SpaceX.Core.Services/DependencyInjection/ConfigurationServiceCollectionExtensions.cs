@@ -13,6 +13,7 @@ public static class ConfigurationServiceCollectionExtensions
         services.Configure<EmailConfiguration>(configuration.GetSection("EmailConfiguration"));
         services.Configure<EncryptionConfiguration>(configuration.GetSection("EncryptionConfiguration"));
         services.Configure<JwtTokenConfiguration>(configuration.GetSection("JwtTokenConfiguration"));
+        services.Configure<CacheConfiguration>(configuration.GetSection("CacheConfiguration"));
 
         return services;
     }

@@ -30,6 +30,8 @@ public sealed class AuthenticationController : ControllerBase
     /// </summary>
     [HttpPost("login")]
     [ProducesResponseType(typeof(ApiResponse<LoginResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
         var response = await _authenticationService.LoginAsync(request.ToDomain(), cancellationToken);
@@ -43,6 +45,9 @@ public sealed class AuthenticationController : ControllerBase
     [HttpGet("authorize")]
     [AuthRequired]
     [ProducesResponseType(typeof(ApiResponse<LoginResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Authorize(CancellationToken cancellationToken)
     {
         var accessToken = Request.Headers.Authorization.ToString();
@@ -57,6 +62,9 @@ public sealed class AuthenticationController : ControllerBase
     /// </summary>
     [HttpPost("refresh-token")]
     [ProducesResponseType(typeof(ApiResponse<LoginResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RefreshTokens([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var response = await _authenticationService.RefreshTokenAsync(request.ToDomain(), cancellationToken);
@@ -70,6 +78,9 @@ public sealed class AuthenticationController : ControllerBase
     [HttpPost("logout")]
     [AuthRequired]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Logout([FromBody] LogoutRequest request, CancellationToken cancellationToken)
     {
         await _authenticationService.LogoutAsync(request.ToDomain(), cancellationToken);
@@ -82,6 +93,8 @@ public sealed class AuthenticationController : ControllerBase
     /// </summary>
     [HttpPost("verify")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> VerifyAccount([FromBody] VerifyAccountRequest request, CancellationToken cancellationToken)
     {
         await _authenticationService.VerifyAccountAsync(request.ToDomain(), cancellationToken);
@@ -94,6 +107,8 @@ public sealed class AuthenticationController : ControllerBase
     /// </summary>
     [HttpPost("{email}/resend-verification-email")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> SendVerificationEmail([FromRoute] string email, CancellationToken cancellationToken)
     {
         await _authenticationService.SendVerificationEmailAsync(email, cancellationToken);
@@ -106,6 +121,8 @@ public sealed class AuthenticationController : ControllerBase
     /// </summary>
     [HttpPost("{email}/forgot-password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> SendForgotPasswordEmail([FromRoute] string email, CancellationToken cancellationToken)
     {
         await _authenticationService.SendForgotPasswordEmailAsync(email, cancellationToken);
@@ -118,6 +135,8 @@ public sealed class AuthenticationController : ControllerBase
     /// </summary>
     [HttpPost("{email}/resend-forgot-password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> ResendForgotPasswordEmail([FromRoute] string email, CancellationToken cancellationToken)
     {
         await _authenticationService.SendForgotPasswordEmailAsync(email, cancellationToken);
@@ -130,6 +149,8 @@ public sealed class AuthenticationController : ControllerBase
     /// </summary>
     [HttpPost("reset-password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken)
     {
         await _authenticationService.ResetPasswordAsync(request.ToDomain(), cancellationToken);
@@ -143,6 +164,8 @@ public sealed class AuthenticationController : ControllerBase
     [HttpPost("change-password")]
     [AuthRequired]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request, CancellationToken cancellationToken)
     {
         await _authenticationService.ChangePasswordAsync(request.ToDomain(), cancellationToken);
@@ -155,6 +178,8 @@ public sealed class AuthenticationController : ControllerBase
     /// </summary>
     [HttpGet("check-email/{email}")]
     [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CheckIsEmailRegistered([FromRoute] string email, CancellationToken cancellationToken)
     {
         var response = await _accountService.CheckIsEmailRegisteredAsync(email, cancellationToken);

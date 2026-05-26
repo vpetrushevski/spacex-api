@@ -30,7 +30,7 @@ public sealed class AuthRequiredAttribute : ActionFilterAttribute
             throw new UnauthorizedAccessException("Missing access token.");
         }
 
-        ClaimsIdentity identity = authenticationService.ValidateAccessToken(accessToken);
+        var identity = authenticationService.ValidateAccessToken(accessToken);
 
         var accountId = GetRequiredClaimValue(identity, ClaimTypes.NameIdentifier);
         var firstName = GetRequiredClaimValue(identity, ClaimTypes.GivenName);

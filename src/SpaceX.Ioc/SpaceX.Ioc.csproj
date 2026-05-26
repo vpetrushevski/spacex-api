@@ -16,5 +16,6 @@
     <ProjectReference Include="..\SpaceX.Infrastructure.Database\SpaceX.Infrastructure.Database.csproj" />
     <ProjectReference Include="..\SpaceX.Core.Services\SpaceX.Core.Services.csproj" />
     <ProjectReference Include="..\SpaceX.Infrastructure.Email\SpaceX.Infrastructure.Email.csproj" />
+    <ProjectReference Include="..\SpaceX.Infrastructure.ExternalApis\SpaceX.Infrastructure.ExternalApis.csproj" />
   </ItemGroup>
 </Project>
