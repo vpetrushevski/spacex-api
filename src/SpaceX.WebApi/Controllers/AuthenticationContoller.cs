@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
+using SpaceX.Core.Services.Interfaces;
 using SpaceX.Core.Services.Interfaces.Authentication;
 using SpaceX.WebApi.Contracts.Requests;
 using SpaceX.WebApi.Contracts.Responses;
@@ -14,10 +15,14 @@ namespace SpaceX.WebApi.Controllers;
 public sealed class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService _authenticationService;
+    private readonly IAccountService _accountService;
 
-    public AuthenticationController(IAuthenticationService authenticationService)
+    public AuthenticationController(
+        IAuthenticationService authenticationService,
+        IAccountService accountService)
     {
         _authenticationService = authenticationService;
+        _accountService = accountService;
     }
 
     /// <summary>
@@ -143,5 +148,17 @@ public sealed class AuthenticationController : ControllerBase
         await _authenticationService.ChangePasswordAsync(request.ToDomain(), cancellationToken);
 
         return NoContent();
+    }
+
+    /// <summary>
+    /// Check is email registered
+    /// </summary>
+    [HttpGet("check-email/{email}")]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> CheckIsEmailRegistered([FromRoute] string email, CancellationToken cancellationToken)
+    {
+        var response = await _accountService.CheckIsEmailRegisteredAsync(email, cancellationToken);
+
+        return this.SuccessResponse(response);
     }
 }

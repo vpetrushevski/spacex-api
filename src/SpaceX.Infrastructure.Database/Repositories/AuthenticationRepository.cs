@@ -52,21 +52,6 @@ public class AuthenticationRepository : IAuthenticationRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteExpiredRefreshTokensAsync(CancellationToken cancellationToken)
-    {
-        var tokensToRemove = await _context.RefreshTokens
-            .Where(x => x.ExpiresAtUtc < DateTimeOffset.UtcNow)
-            .ToListAsync(cancellationToken);
-
-        if (tokensToRemove.Count == 0)
-        {
-            return;
-        }
-
-        _context.RefreshTokens.RemoveRange(tokensToRemove);
-        await _context.SaveChangesAsync(cancellationToken);
-    }
-
     public async Task CreatePasswordResetTokenAsync(PasswordResetToken passwordResetToken, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(passwordResetToken);
