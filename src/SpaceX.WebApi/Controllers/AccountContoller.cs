@@ -30,16 +30,4 @@ public sealed class AccountController : ControllerBase
 
         return StatusCode(StatusCodes.Status201Created);
     }
-
-    /// <summary>
-    /// Check is email registered
-    /// </summary>
-    [HttpGet("check-email/{email}")]
-    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CheckIsEmailRegistered([FromRoute] string email, CancellationToken cancellationToken)
-    {
-        var response = await _accountService.CheckIsEmailRegisteredAsync(email, cancellationToken);
-
-        return this.SuccessResponse(response);
-    }
 }

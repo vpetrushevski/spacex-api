@@ -34,7 +34,7 @@ public class EmailSender : IEmailSender
     {
         ArgumentNullException.ThrowIfNull(message);
 
-        var verificationLink = $"{_applicationConfiguration.AppUrl}/auth/verify?uid={message.AccountId}&token={message.Token}";
+        var verificationLink = $"{_applicationConfiguration.AppUrl}/auth/verify?uid={message.AccountId}&token={Uri.EscapeDataString(message.Token!)}";
 
         var parameters = new Dictionary<string, string?>
         {
@@ -52,7 +52,7 @@ public class EmailSender : IEmailSender
     {
         ArgumentNullException.ThrowIfNull(message);
 
-        var resetLink = $"{_applicationConfiguration.AppUrl}/auth/reset-password?uid={message.AccountId}&token={message.Token}";
+        var resetLink = $"{_applicationConfiguration.AppUrl}/auth/reset-password?uid={message.AccountId}&token={Uri.EscapeDataString(message.Token!)}";
 
         var parameters = new Dictionary<string, string?>
         {
