@@ -9,5 +9,9 @@ public class CacheConfiguration
     public required string LaunchesCacheKey { get; init; }
 
     public int LaunchesExpirationInMinutes { get; init; }
+
+    public required string LaunchDetailsCacheKey { get; init; }
+
+    public int LaunchDetailsExpirationInHours { get; init; }
 }
 
