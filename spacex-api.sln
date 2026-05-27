@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceX.Infrastructure.Email
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceX.Infrastructure.ExternalApis", "src\SpaceX.Infrastructure.ExternalApis\SpaceX.Infrastructure.ExternalApis.csproj", "{BE846170-06E2-4454-89DB-55DC80D08342}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceX.IntegrationTests", "tests\SpaceX.IntegrationTests\SpaceX.IntegrationTests.csproj", "{15801505-E36F-4463-9987-90332C3F3E65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +153,18 @@ Global
 		{BE846170-06E2-4454-89DB-55DC80D08342}.Release|x64.Build.0 = Release|Any CPU
 		{BE846170-06E2-4454-89DB-55DC80D08342}.Release|x86.ActiveCfg = Release|Any CPU
 		{BE846170-06E2-4454-89DB-55DC80D08342}.Release|x86.Build.0 = Release|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Debug|x64.Build.0 = Debug|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Debug|x86.Build.0 = Debug|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Release|x64.ActiveCfg = Release|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Release|x64.Build.0 = Release|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Release|x86.ActiveCfg = Release|Any CPU
+		{15801505-E36F-4463-9987-90332C3F3E65}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,6 +180,7 @@ Global
 		{E903F04D-B7FF-480B-B5B9-A9A3485EDDA3} = {81F34D0F-4E0B-482C-B8C9-45270F0A02C4}
 		{6ABE3C18-4DC4-415E-AAF0-20E6C616338C} = {BC75CC59-1636-4B04-8866-D3A2C3C58C15}
 		{BE846170-06E2-4454-89DB-55DC80D08342} = {BC75CC59-1636-4B04-8866-D3A2C3C58C15}
+		{15801505-E36F-4463-9987-90332C3F3E65} = {CEE42DFD-92C7-4E3D-8B04-278221F91B3F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DF947E3-B762-4742-8F8A-51E6979FB719}
