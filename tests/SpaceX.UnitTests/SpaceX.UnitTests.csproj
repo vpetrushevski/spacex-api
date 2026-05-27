@@ -33,6 +33,8 @@
     <None Remove="Infrastructure\Email\BackgroundServices\" />
     <None Remove="Infrastructure\Email\Providers\" />
     <None Remove="Infrastructure\Email\Senders\" />
+    <None Remove="Core\" />
+    <None Remove="Core\Services\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="WebApi\" />
@@ -46,6 +48,8 @@
     <Folder Include="Infrastructure\Email\BackgroundServices\" />
     <Folder Include="Infrastructure\Email\Providers\" />
     <Folder Include="Infrastructure\Email\Senders\" />
+    <Folder Include="Core\" />
+    <Folder Include="Core\Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SpaceX.WebApi\SpaceX.WebApi.csproj" />
