@@ -27,16 +27,11 @@ public static class LaunchMapping
 
         return new ContractResponses.PaginatedLaunchesResponse
         {
-            Docs = domain.Docs.Select(x => x.ToContract()).ToList(),
+            Launches = domain.Launches.Select(x => x.ToContract()).ToList(),
             TotalDocs = domain.TotalDocs,
             Limit = domain.Limit,
             TotalPages = domain.TotalPages,
-            Page = domain.Page,
-            PagingCounter = domain.PagingCounter,
-            HasPrevPage = domain.HasPrevPage,
-            HasNextPage = domain.HasNextPage,
-            PrevPage = domain.PrevPage,
-            NextPage = domain.NextPage
+            Page = domain.Page
         };
     }
 
@@ -46,46 +41,20 @@ public static class LaunchMapping
 
         return new ContractResponses.LaunchResponse
         {
-            Fairings = domain.Fairings?.ToContract(),
             Links = domain.Links.ToContract(),
-            StaticFireDateUtc = domain.StaticFireDateUtc,
-            StaticFireDateUnix = domain.StaticFireDateUnix,
-            Net = domain.Net,
-            Window = domain.Window,
             Rocket = domain.Rocket,
             Success = domain.Success,
-            Failures = domain.Failures.Select(x => x.ToContract()).ToList(),
             Details = domain.Details,
             Crew = domain.Crew.Select(x => x.ToContract()).ToList(),
             Ships = domain.Ships,
             Capsules = domain.Capsules,
-            Payloads = domain.Payloads,
             Launchpad = domain.Launchpad,
             FlightNumber = domain.FlightNumber,
             Name = domain.Name,
             DateUtc = domain.DateUtc,
-            DateUnix = domain.DateUnix,
-            DateLocal = domain.DateLocal,
-            DatePrecision = domain.DatePrecision,
             Upcoming = domain.Upcoming,
             Cores = domain.Cores.Select(x => x.ToContract()).ToList(),
-            AutoUpdate = domain.AutoUpdate,
-            Tbd = domain.Tbd,
-            LaunchLibraryId = domain.LaunchLibraryId,
             Id = domain.Id
-        };
-    }
-
-    public static ContractResponses.FairingsResponse ToContract(this FairingsResponse domain)
-    {
-        ArgumentNullException.ThrowIfNull(domain);
-
-        return new ContractResponses.FairingsResponse
-        {
-            Reused = domain.Reused,
-            RecoveryAttempt = domain.RecoveryAttempt,
-            Recovered = domain.Recovered,
-            Ships = domain.Ships
         };
     }
 
@@ -141,18 +110,6 @@ public static class LaunchMapping
         };
     }
 
-    public static ContractResponses.FailureResponse ToContract(this FailureResponse domain)
-    {
-        ArgumentNullException.ThrowIfNull(domain);
-
-        return new ContractResponses.FailureResponse
-        {
-            Time = domain.Time,
-            Altitude = domain.Altitude,
-            Reason = domain.Reason
-        };
-    }
-
     public static ContractResponses.CrewResponse ToContract(this CrewResponse domain)
     {
         ArgumentNullException.ThrowIfNull(domain);
@@ -170,13 +127,6 @@ public static class LaunchMapping
 
         return new ContractResponses.CoreResponse
         {
-            CoreId = domain.CoreId,
-            Flight = domain.Flight,
-            Gridfins = domain.Gridfins,
-            Legs = domain.Legs,
-            Reused = domain.Reused,
-            LandingAttempt = domain.LandingAttempt,
-            LandingSuccess = domain.LandingSuccess,
             LandingType = domain.LandingType,
             Landpad = domain.Landpad
         };
@@ -188,45 +138,13 @@ public static class LaunchMapping
 
         return new ContractResponses.RocketResponse
         {
-            Height = domain.Height.ToContract(),
-            Diameter = domain.Diameter.ToContract(),
-            Mass = domain.Mass.ToContract(),
             FlickrImages = domain.FlickrImages,
             Name = domain.Name,
             Type = domain.Type,
-            Active = domain.Active,
-            Stages = domain.Stages,
-            Boosters = domain.Boosters,
             CostPerLaunch = domain.CostPerLaunch,
             SuccessRatePct = domain.SuccessRatePct,
-            FirstFlight = domain.FirstFlight,
-            Country = domain.Country,
-            Company = domain.Company,
-            Wikipedia = domain.Wikipedia,
             Description = domain.Description,
             Id = domain.Id
-        };
-    }
-
-    public static ContractResponses.RocketDimensionResponse ToContract(this RocketDimensionResponse domain)
-    {
-        ArgumentNullException.ThrowIfNull(domain);
-
-        return new ContractResponses.RocketDimensionResponse
-        {
-            Meters = domain.Meters,
-            Feet = domain.Feet
-        };
-    }
-
-    public static ContractResponses.RocketMassResponse ToContract(this RocketMassResponse domain)
-    {
-        ArgumentNullException.ThrowIfNull(domain);
-
-        return new ContractResponses.RocketMassResponse
-        {
-            Kg = domain.Kg,
-            Lb = domain.Lb
         };
     }
 
@@ -242,14 +160,8 @@ public static class LaunchMapping
             Status = domain.Status,
             Locality = domain.Locality,
             Region = domain.Region,
-            Latitude = domain.Latitude,
-            Longitude = domain.Longitude,
             Details = domain.Details,
-            Id = domain.Id,
-            LaunchAttempts = domain.LaunchAttempts,
-            LaunchSuccesses = domain.LaunchSuccesses,
-            Rockets = domain.Rockets,
-            Timezone = domain.Timezone
+            Id = domain.Id
         };
     }
 
@@ -265,14 +177,9 @@ public static class LaunchMapping
             Status = domain.Status,
             Locality = domain.Locality,
             Region = domain.Region,
-            Latitude = domain.Latitude,
-            Longitude = domain.Longitude,
             Details = domain.Details,
             Id = domain.Id,
-            Type = domain.Type,
-            LandingAttempts = domain.LandingAttempts,
-            LandingSuccesses = domain.LandingSuccesses,
-            Wikipedia = domain.Wikipedia
+            Type = domain.Type
         };
     }
 
@@ -309,16 +216,9 @@ public static class LaunchMapping
 
         return new ContractResponses.ShipResponse
         {
-            LegacyId = domain.LegacyId,
-            Model = domain.Model,
             Type = domain.Type,
             Roles = domain.Roles,
-            YearBuilt = domain.YearBuilt,
             HomePort = domain.HomePort,
-            Status = domain.Status,
-            Latitude = domain.Latitude,
-            Longitude = domain.Longitude,
-            Link = domain.Link,
             Image = domain.Image,
             Name = domain.Name,
             Active = domain.Active,

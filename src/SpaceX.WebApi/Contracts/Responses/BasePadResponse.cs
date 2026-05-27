@@ -14,10 +14,6 @@ public record BasePadResponse
 
     public required string Region { get; init; }
 
-    public double Latitude { get; init; }
-
-    public double Longitude { get; init; }
-
     public required string Details { get; init; }
 
     public required string Id { get; init; }
