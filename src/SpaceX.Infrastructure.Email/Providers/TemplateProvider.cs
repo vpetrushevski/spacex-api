@@ -5,7 +5,14 @@ namespace SpaceX.Infrastructure.Email.Providers;
 
 public class TemplateProvider : ITemplateProvider
 {
-    public async Task<string> GetTemplateAsync(string templateFor, string templateName, CancellationToken cancellationToken = default)
+    public async Task<string> GetTemplateAsync(string templateFor, string templateName, IReadOnlyDictionary<string, string?> parameters, CancellationToken cancellationToken = default)
+    {
+        var rawHtml = await GetTemplateAsync(templateFor, templateName, cancellationToken);
+
+        return ParseHtmlWithParameters(rawHtml, parameters);
+    }
+
+    private static async Task<string> GetTemplateAsync(string templateFor, string templateName, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(templateFor);
         ArgumentException.ThrowIfNullOrWhiteSpace(templateName);
@@ -17,13 +24,6 @@ public class TemplateProvider : ITemplateProvider
             templateName);
 
         return await File.ReadAllTextAsync(templatePath, cancellationToken);
-    }
-
-    public async Task<string> GetTemplateAsync(string templateFor, string templateName, IReadOnlyDictionary<string, string?> parameters, CancellationToken cancellationToken = default)
-    {
-        var rawHtml = await GetTemplateAsync(templateFor, templateName, cancellationToken);
-
-        return ParseHtmlWithParameters(rawHtml, parameters);
     }
 
     private static string ParseHtmlWithParameters(string rawHtml, IReadOnlyDictionary<string, string?> parameters)
