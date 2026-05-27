@@ -36,16 +36,11 @@ public static class LaunchMappings
 
         return new PaginatedLaunchesResponse
         {
-            Docs = contract.Docs.Select(x => x.ToDomain()).ToList(),
+            Launches = contract.Docs.Select(x => x.ToDomain()).ToList(),
             TotalDocs = contract.TotalDocs,
             Limit = contract.Limit,
             TotalPages = contract.TotalPages,
-            Page = contract.Page,
-            PagingCounter = contract.PagingCounter,
-            HasPrevPage = contract.HasPrevPage,
-            HasNextPage = contract.HasNextPage,
-            PrevPage = contract.PrevPage,
-            NextPage = contract.NextPage
+            Page = contract.Page
         };
     }
 
@@ -55,46 +50,20 @@ public static class LaunchMappings
 
         return new LaunchResponse
         {
-            Fairings = contract.Fairings?.ToDomain(),
             Links = contract.Links.ToDomain(),
-            StaticFireDateUtc = contract.StaticFireDateUtc,
-            StaticFireDateUnix = contract.StaticFireDateUnix,
-            Net = contract.Net,
-            Window = contract.Window,
             Rocket = contract.Rocket,
             Success = contract.Success,
-            Failures = contract.Failures.Select(x => x.ToDomain()).ToList(),
             Details = contract.Details,
             Crew = contract.Crew.Select(x => x.ToDomain()).ToList(),
             Ships = contract.Ships,
             Capsules = contract.Capsules,
-            Payloads = contract.Payloads,
             Launchpad = contract.Launchpad,
             FlightNumber = contract.FlightNumber,
             Name = contract.Name,
             DateUtc = contract.DateUtc,
-            DateUnix = contract.DateUnix,
-            DateLocal = contract.DateLocal,
-            DatePrecision = contract.DatePrecision,
             Upcoming = contract.Upcoming,
             Cores = contract.Cores.Select(x => x.ToDomain()).ToList(),
-            AutoUpdate = contract.AutoUpdate,
-            Tbd = contract.Tbd,
-            LaunchLibraryId = contract.LaunchLibraryId,
             Id = contract.Id
-        };
-    }
-
-    public static FairingsResponse ToDomain(this ContractResponses.FairingsResponse contract)
-    {
-        ArgumentNullException.ThrowIfNull(contract);
-
-        return new FairingsResponse
-        {
-            Reused = contract.Reused,
-            RecoveryAttempt = contract.RecoveryAttempt,
-            Recovered = contract.Recovered,
-            Ships = contract.Ships
         };
     }
 
@@ -150,18 +119,6 @@ public static class LaunchMappings
         };
     }
 
-    public static FailureResponse ToDomain(this ContractResponses.FailureResponse contract)
-    {
-        ArgumentNullException.ThrowIfNull(contract);
-
-        return new FailureResponse
-        {
-            Time = contract.Time,
-            Altitude = contract.Altitude,
-            Reason = contract.Reason
-        };
-    }
-
     public static CrewResponse ToDomain(this ContractResponses.CrewResponse contract)
     {
         ArgumentNullException.ThrowIfNull(contract);
@@ -179,13 +136,6 @@ public static class LaunchMappings
 
         return new CoreResponse
         {
-            CoreId = contract.Core,
-            Flight = contract.Flight,
-            Gridfins = contract.Gridfins,
-            Legs = contract.Legs,
-            Reused = contract.Reused,
-            LandingAttempt = contract.LandingAttempt,
-            LandingSuccess = contract.LandingSuccess,
             LandingType = contract.LandingType,
             Landpad = contract.Landpad
         };
@@ -197,45 +147,13 @@ public static class LaunchMappings
 
         return new RocketResponse
         {
-            Height = contract.Height.ToDomain(),
-            Diameter = contract.Diameter.ToDomain(),
-            Mass = contract.Mass.ToDomain(),
             FlickrImages = contract.FlickrImages,
             Name = contract.Name,
             Type = contract.Type,
-            Active = contract.Active,
-            Stages = contract.Stages,
-            Boosters = contract.Boosters,
             CostPerLaunch = contract.CostPerLaunch,
             SuccessRatePct = contract.SuccessRatePct,
-            FirstFlight = contract.FirstFlight,
-            Country = contract.Country,
-            Company = contract.Company,
-            Wikipedia = contract.Wikipedia,
             Description = contract.Description,
             Id = contract.Id
-        };
-    }
-
-    public static RocketDimensionResponse ToDomain(this ContractResponses.RocketDimensionResponse contract)
-    {
-        ArgumentNullException.ThrowIfNull(contract);
-
-        return new RocketDimensionResponse
-        {
-            Meters = contract.Meters,
-            Feet = contract.Feet
-        };
-    }
-
-    public static RocketMassResponse ToDomain(this ContractResponses.RocketMassResponse contract)
-    {
-        ArgumentNullException.ThrowIfNull(contract);
-
-        return new RocketMassResponse
-        {
-            Kg = contract.Kg,
-            Lb = contract.Lb
         };
     }
 
@@ -254,11 +172,7 @@ public static class LaunchMappings
             Latitude = contract.Latitude,
             Longitude = contract.Longitude,
             Details = contract.Details,
-            Id = contract.Id,
-            LaunchAttempts = contract.LaunchAttempts,
-            LaunchSuccesses = contract.LaunchSuccesses,
-            Rockets = contract.Rockets,
-            Timezone = contract.Timezone
+            Id = contract.Id
         };
     }
 
@@ -278,10 +192,7 @@ public static class LaunchMappings
             Longitude = contract.Longitude,
             Details = contract.Details,
             Id = contract.Id,
-            Type = contract.Type,
-            LandingAttempts = contract.LandingAttempts,
-            LandingSuccesses = contract.LandingSuccesses,
-            Wikipedia = contract.Wikipedia
+            Type = contract.Type
         };
     }
 
@@ -318,16 +229,9 @@ public static class LaunchMappings
 
         return new ShipResponse
         {
-            LegacyId = contract.LegacyId,
-            Model = contract.Model,
             Type = contract.Type,
             Roles = contract.Roles,
-            YearBuilt = contract.YearBuilt,
             HomePort = contract.HomePort,
-            Status = contract.Status,
-            Latitude = contract.Latitude,
-            Longitude = contract.Longitude,
-            Link = contract.Link,
             Image = contract.Image,
             Name = contract.Name,
             Active = contract.Active,
