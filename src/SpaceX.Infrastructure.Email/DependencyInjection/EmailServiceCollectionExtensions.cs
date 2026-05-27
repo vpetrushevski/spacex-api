@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using SpaceX.Infrastructure.Email.BackgroundServices;
@@ -7,6 +9,7 @@ using SpaceX.Infrastructure.Interfaces.Email;
 
 namespace SpaceX.Infrastructure.Email.DependencyInjection;
 
+[ExcludeFromCodeCoverage]
 public static class EmailServiceCollectionExtensions
 {
     public static IServiceCollection AddEmailServices(this IServiceCollection services)

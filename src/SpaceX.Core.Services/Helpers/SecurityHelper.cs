@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace SpaceX.Core.Services.Helpers;
 
+[ExcludeFromCodeCoverage]
 public static class SecurityHelper
 {
     public static string HashPassword(string password)

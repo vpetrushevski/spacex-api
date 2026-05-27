@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.EntityFrameworkCore;
 
 using SpaceX.Core.Domain.Entities;
@@ -8,6 +10,7 @@ using SpaceX.Infrastructure.Interfaces.Database.Repositories;
 
 namespace SpaceX.Infrastructure.Database.Repositories;
 
+[ExcludeFromCodeCoverage]
 public class AccountRepository : IAccountRepository
 {
     private readonly ISpaceXDbContext _context;

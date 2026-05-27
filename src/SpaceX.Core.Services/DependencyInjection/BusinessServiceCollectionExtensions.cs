@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using SpaceX.Core.Services.Accounts;
@@ -9,6 +11,7 @@ using SpaceX.Core.Services.Launches;
 
 namespace SpaceX.Core.Services.DependencyInjection;
 
+[ExcludeFromCodeCoverage]
 public static class BusinessServiceCollectionExtensions
 {
     public static IServiceCollection AddBusinessServices(this IServiceCollection services)

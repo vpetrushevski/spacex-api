@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -7,6 +9,7 @@ using SpaceX.Infrastructure.Interfaces.ExternalApis.SpaceX;
 
 namespace SpaceX.Infrastructure.ExternalApis.SpaceX.DependencyInjection;
 
+[ExcludeFromCodeCoverage]
 public static class SpaceXExternalApiServiceCollectionExtensions
 {
     public static IServiceCollection AddSpaceXExternalApiConfiguration(this IServiceCollection services, IConfiguration configuration)

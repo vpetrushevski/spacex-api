@@ -37,7 +37,7 @@ public static class LaunchMappings
         return new PaginatedLaunchesResponse
         {
             Launches = contract.Docs.Select(x => x.ToDomain()).ToList(),
-            TotalDocs = contract.TotalDocs,
+            TotalLaunches = contract.TotalDocs,
             Limit = contract.Limit,
             TotalPages = contract.TotalPages,
             Page = contract.Page

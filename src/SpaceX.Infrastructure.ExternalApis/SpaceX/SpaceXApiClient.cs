@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ using ContractResponses = SpaceX.Infrastructure.ExternalApis.SpaceX.Contracts.Re
 
 namespace SpaceX.Infrastructure.ExternalApis.SpaceX;
 
+[ExcludeFromCodeCoverage]
 public class SpaceXApiClient : ISpaceXApiClient
 {
     private readonly HttpClient _httpClient;

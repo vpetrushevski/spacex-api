@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,6 +9,7 @@ using SpaceX.Infrastructure.Interfaces.Database.Repositories;
 
 namespace SpaceX.Infrastructure.Database.DependencyInjection;
 
+[ExcludeFromCodeCoverage]
 public static class DatabaseServiceCollectionExtensions
 {
     public static IServiceCollection AddDatabaseServices(this IServiceCollection services, string connectionString)

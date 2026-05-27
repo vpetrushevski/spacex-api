@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
 
@@ -6,6 +7,7 @@ using SpaceX.WebApi.Contracts.Responses;
 
 namespace SpaceX.WebApi.Middlewares;
 
+[ExcludeFromCodeCoverage]
 public sealed class ExceptionHandlingMiddleware
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new()

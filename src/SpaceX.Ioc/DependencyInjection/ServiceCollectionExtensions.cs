@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +10,7 @@ using SpaceX.Infrastructure.ExternalApis.SpaceX.DependencyInjection;
 
 namespace SpaceX.Ioc.DependencyInjection;
 
+[ExcludeFromCodeCoverage]
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddCommonServices(this IServiceCollection services, IConfiguration configuration)

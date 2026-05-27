@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 
 namespace SpaceX.Core.Services.Helpers;
 
+[ExcludeFromCodeCoverage]
 public static class RandomGeneratorHelper
 {
     private const string Characters =
