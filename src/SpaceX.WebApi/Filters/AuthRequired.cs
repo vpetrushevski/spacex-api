@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using SpaceX.Core.Domain.Models.Authentication;
 using SpaceX.Core.Services.Interfaces.Authentication;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 
 namespace SpaceX.WebApi.Filters;
 
+[ExcludeFromCodeCoverage]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class AuthRequiredAttribute : ActionFilterAttribute
 {

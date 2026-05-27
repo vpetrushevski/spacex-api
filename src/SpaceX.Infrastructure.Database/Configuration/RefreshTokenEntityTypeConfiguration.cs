@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -5,6 +7,7 @@ using SpaceX.Infrastructure.Database.Models;
 
 namespace SpaceX.Infrastructure.Database.Configuration;
 
+[ExcludeFromCodeCoverage]
 public class RefreshTokenEntityTypeConfiguration : IEntityTypeConfiguration<RefreshTokenDataModel>
 {
     public void Configure(EntityTypeBuilder<RefreshTokenDataModel> builder)

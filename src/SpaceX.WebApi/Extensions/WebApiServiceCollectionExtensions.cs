@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 
@@ -5,6 +7,7 @@ using SpaceX.WebApi.Contracts.Responses;
 
 namespace SpaceX.WebApi.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class WebApiServiceCollectionExtensions
 {
     public static IServiceCollection AddWebApiServices(this IServiceCollection services)

@@ -4,7 +4,7 @@ public class PaginatedLaunchesResponse
 {
     public required IReadOnlyList<LaunchResponse> Launches { get; init; }
 
-    public int TotalDocs { get; init; }
+    public int TotalLaunches { get; init; }
 
     public int Limit { get; init; }
 

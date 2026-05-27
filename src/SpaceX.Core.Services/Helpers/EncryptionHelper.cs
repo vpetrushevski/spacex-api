@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -7,6 +8,7 @@ using SpaceX.Core.Domain.Configuration;
 
 namespace SpaceX.Core.Services.Helpers;
 
+[ExcludeFromCodeCoverage]
 public sealed class EncryptionHelper
 {
     private const int AesKeySizeInBytes = 32;

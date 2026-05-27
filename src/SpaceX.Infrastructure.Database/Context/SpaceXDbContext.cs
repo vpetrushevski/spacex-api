@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.EntityFrameworkCore;
 
 using SpaceX.Infrastructure.Database.Configuration;
@@ -5,6 +7,7 @@ using SpaceX.Infrastructure.Database.Models;
 
 namespace SpaceX.Infrastructure.Database.Context;
 
+[ExcludeFromCodeCoverage]
 public class SpaceXDbContext : DbContext, ISpaceXDbContext
 {
     public SpaceXDbContext(DbContextOptions<SpaceXDbContext> options) : base(options)
