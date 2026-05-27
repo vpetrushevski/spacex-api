@@ -29,6 +29,10 @@
     <None Remove="Infrastructure\ExternalApis\" />
     <None Remove="Infrastructure\Database\" />
     <None Remove="Infrastructure\Database\Mappings\" />
+    <None Remove="Infrastructure\Email\" />
+    <None Remove="Infrastructure\Email\BackgroundServices\" />
+    <None Remove="Infrastructure\Email\Providers\" />
+    <None Remove="Infrastructure\Email\Senders\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="WebApi\" />
@@ -38,6 +42,10 @@
     <Folder Include="Infrastructure\ExternalApis\" />
     <Folder Include="Infrastructure\Database\" />
     <Folder Include="Infrastructure\Database\Mappings\" />
+    <Folder Include="Infrastructure\Email\" />
+    <Folder Include="Infrastructure\Email\BackgroundServices\" />
+    <Folder Include="Infrastructure\Email\Providers\" />
+    <Folder Include="Infrastructure\Email\Senders\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SpaceX.WebApi\SpaceX.WebApi.csproj" />
